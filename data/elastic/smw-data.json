@@ -1,0 +1,189 @@
+{
+	"settings": {
+		"number_of_shards": 2,
+		"number_of_replicas": 2,
+		"refresh_interval" : "1s",
+		"index.mapping.total_fields.limit": "3000",
+		"index.max_result_window": "50000",
+		"analysis": {
+			"filter": {
+				"uri_stopwords_filter": {
+					"type": "stop",
+					"stopwords": [ "http", "https", "ftp", "www" ]
+				},
+				"english_stop": {
+					"type": "stop",
+					"stopwords": "_english_"
+				},
+				"english_stemmer": {
+					"type": "stemmer",
+					"language": "english"
+				}
+			},
+			"analyzer": {
+				"uri_lowercase_with_stopwords": {
+					"type": "custom",
+					"tokenizer": "lowercase",
+					"filter": [ "uri_stopwords_filter" ]
+				},
+				"english_with_stopwords_and_stemmer": {
+				  "char_filter":  [ "html_strip" ],
+				  "tokenizer":  "standard",
+				  "filter": [ "lowercase", "english_stop", "english_stemmer" ]
+				}
+			}
+		}
+	},
+	"mappings": {
+		"data": {
+			"dynamic_templates": [
+				{
+					"text_fields": {
+						"path_match": "P:*.txtField",
+						"match_mapping_type": "string",
+						"mapping": {
+							"type": "text",
+							"fields": {
+								"keyword": {
+									"type": "keyword",
+									"ignore_above": 256
+								}
+							}
+						}
+					}
+				},
+				{
+					"uri_fields": {
+						"path_match": "P:*.uriField",
+						"match_mapping_type": "string",
+						"mapping": {
+							"type": "text",
+							"fields": {
+								"keyword": {
+									"type": "keyword",
+									"ignore_above": 256
+								},
+								"lowercase": {
+									"type":     "text",
+									"analyzer": "uri_lowercase_with_stopwords"
+								}
+							}
+						}
+					}
+				},
+				{
+					"page_fields_text": {
+						"path_match": "P:*.wpgField",
+						"match_mapping_type": "string",
+						"mapping": {
+							"type": "text",
+							"fields": {
+								"keyword": {
+									"type": "keyword",
+									"ignore_above": 256
+								}
+							}
+						}
+					}
+				},
+				{
+					"page_fields_identifier": {
+						"path_match": "P:*.wpgID",
+						"match_mapping_type": "*",
+						"mapping": {
+							"type": "long"
+						}
+					}
+				},
+				{
+					"page_fields_identifier_inverted": {
+						"path_match": "iP:*.wpgID",
+						"match_mapping_type": "*",
+						"mapping": {
+							"type": "long"
+						}
+					}
+				},
+				{
+					"numeric_fields": {
+						"path_match": "P:*.numField",
+						"match_mapping_type": "*",
+						"mapping": {
+							"type": "double"
+						}
+					}
+				},
+				{
+					"date_fields": {
+						"path_match": "P:*.datField",
+						"match_mapping_type": "*",
+						"mapping": {
+							"type": "double",
+							"fields": {
+								"keyword": {
+									"type": "keyword",
+									"ignore_above": 256
+								}
+							}
+						}
+					}
+				},
+				{
+					"geo_fields": {
+						"path_match": "P:*.geoField",
+						"match_mapping_type": "string",
+						"mapping": {
+							"type": "text",
+							"fields": {
+								"point": {
+									"type": "geo_point"
+								}
+							}
+						}
+					}
+				},
+				{
+					"boolean_fields": {
+						"path_match": "P:*.booField",
+						"match_mapping_type": "boolean",
+						"mapping": {
+							"type": "boolean"
+						}
+					}
+				}
+			],
+			"properties": {
+				"noop": {
+					"type": "integer"
+				},
+				"subject.title": {
+					"type": "text",
+					"fields": {
+						"keyword": {
+							"type": "keyword",
+							"ignore_above": 256
+						}
+					}
+				},
+				"subject.interwiki": {
+					"type": "text",
+					"fields": {
+						"keyword": {
+							"type": "keyword",
+							"ignore_above": 256
+						}
+					}
+				},
+				"subject.sortkey": {
+					"type": "text",
+					"fields": {
+						"keyword": {
+							"type": "keyword",
+							"ignore_above": 256
+						}
+					}
+				}
+			}
+		}
+	}
+}

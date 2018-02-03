@@ -226,6 +226,7 @@ class JsonTestCaseScriptRunnerTest extends JsonTestCaseScriptRunner {
 			'smwgCreateProtectionRight',
 			'smwgParserFeatures',
 			'smwgCategoryFeatures',
+			'smwgElasticsearchConfig',
 
 			// MW related
 			'wgLanguageCode',

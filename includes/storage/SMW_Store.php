@@ -56,6 +56,11 @@ abstract class Store implements QueryEngine {
 	 */
 	protected $options = null;
 
+	/**
+	 * @var array
+	 */
+	protected $extensionData = [];
+
 ///// Reading methods /////
 
 	/**
@@ -478,6 +483,32 @@ abstract class Store implements QueryEngine {
 	 */
 	public function getParserTestTables() {
 		return array();
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	public function setExtensionData( $key, $value ) {
+		$this->extensionData[$key] = $value;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * @param string $key
+	 *
+	 * @return mixed|null
+	 */
+	public function getExtensionData( $key ) {
+
+		if ( isset( $this->extensionData[$key] ) ) {
+			return $this->extensionData[$key];
+		}
+
+		return null;
 	}
 
 	/**

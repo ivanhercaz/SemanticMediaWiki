@@ -18,6 +18,7 @@ class_alias( 'SMW\Query\Parser', 'SMWQueryParser' );
 class_alias( 'SMW\SQLStore\ChangeOp\ChangeOp', 'SMW\SQLStore\CompositePropertyTableDiffIterator' );
 class_alias( 'SMW\Connection\ConnectionProvider', 'SMW\DBConnectionProvider' );
 
+
 // 1.9.
 class_alias( 'SMW\Store', 'SMWStore' );
 class_alias( 'SMW\MediaWiki\Jobs\UpdateJob', 'SMWUpdateJob' );
@@ -90,3 +91,6 @@ class_alias( 'SMW\ParserFunctions\SubobjectParserFunction', 'SMW\SubobjectParser
 class_alias( 'SMW\ParserFunctions\RecurringEventsParserFunction', 'SMW\RecurringEventsParserFunction' );
 class_alias( 'SMW\SQLStore\PropertyTableDefinition', 'SMW\SQLStore\TableDefinition' );
 class_alias( 'SMW\DataModel\ContainerSemanticData', 'SMWContainerSemanticData' );
+
+// 3.0 (late alias definition)
+class_alias( 'SMW\Elastic\ElasticStore', 'SMWElasticStore' );

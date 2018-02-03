@@ -432,6 +432,13 @@ class LegacyParser implements Parser {
 				$desc = $this->descriptionFactory->newNamespaceDescription( $category ? NS_CATEGORY : SMW_NS_CONCEPT );
 				$description = $this->descriptionProcessor->asOr( $description, $desc );
 			} else { // assume category/concept title
+				$isNegation = false;
+
+				// [[Category:!Foo]]
+				if ( $chunk{0} === '!' ) {
+					$chunk = substr( $chunk, 1 );
+					$isNegation = true;
+				}
 
 				// We add a prefix to prevent problems with, e.g., [[Category:Template:Test]]
 				$prefix = $category ? $this->categoryPrefix : $this->conceptPrefix;
@@ -440,6 +447,11 @@ class LegacyParser implements Parser {
 				if ( $title !== null ) {
 					$diWikiPage = new DIWikiPage( $title->getDBkey(), $title->getNamespace(), '' );
 					$desc = $category ? $this->descriptionFactory->newClassDescription( $diWikiPage ) : $this->descriptionFactory->newConceptDescription( $diWikiPage );
+
+					if ( $isNegation ) {
+						$desc->isNegation = $isNegation;
+					}
+
 					$description = $this->descriptionProcessor->asOr( $description, $desc );
 				}
 			}
